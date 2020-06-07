@@ -1,0 +1,79 @@
+
+scalar Upload
+scalar Date
+directive @auth on FIELD_DEFINITION
+
+type Query{ #Aqui van todos los queries
+    getUsers(is_active:Boolean):[User]!@auth
+    getUser(id:ID, email:String):User@auth
+    getInversion(is_active:Boolean,
+                tag:String,
+                city:String,
+                date:String
+            ):[Inversion]
+    getInversion(id:ID!):Inversion
+    login(email:String,password:String):String
+    
+}
+
+type Mutation{ #Aqui van todos los mutation y modificaciones
+#Post,PUT,PATCH,DELETE
+    createUser(data:Useradd!):User!
+    updateUser(id:ID!,data:Userupdate):User!@auth
+    deleteUser(id:ID!):User!@auth
+    createInversion(data:Inversionadd):Inversion!@auth
+    updateInversion(id:ID!,data:Inversionupdate):Inversion!@auth
+    deleteInversion(id:ID!):Inversion@auth
+
+}
+
+
+input Inversionadd {
+    title:String!
+    description:String!
+    type:String!
+	Fields:
+}
+
+input Inversionupdate{
+    title:String
+    description:String
+	LastUpdateTimeStamp:Date
+	LastEditBy:
+	Fields:
+
+}
+
+input Userupdate{
+    first_name:String
+    last_name:String
+    email:String!
+    password:String!
+    job:String
+}
+
+input Useradd{
+    first_name:String!
+    last_name:String!
+    email:String!
+    password:String!
+    role:String
+    job:String
+}
+
+type User{
+    first_name:String
+    last_name:String
+    email:String
+    password:String
+    job:String
+}
+
+
+type Inversion{
+    _id:ID!
+    title:String
+    description:String
+    Fields:
+
+}
